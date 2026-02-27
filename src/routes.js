@@ -1,22 +1,39 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
 import Users from "./pages/Users";
 import UserEdit, { userLoader } from "./pages/UserEdit";
 
+import ProtectedLayout from "./components/ProtectedLayout";
+import PublicLayout from "./components/PublicLayout";
+
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
+    element: <PublicLayout />,
+    children: [
+      {
+        path: "/signin",
+        element: <SignIn />,
+      },
+    ],
   },
   {
-    path: "/users",
-    element: <Users />,
+    element: <ProtectedLayout />,
+    children: [
+      {
+        path: "/users",
+        element: <Users />,
+      },
+      {
+        path: "/users/:userId",
+        element: <UserEdit />,
+        loader: userLoader,
+      },
+    ],
   },
   {
-    path: "/users/:userId",
-    element: <UserEdit />,
-    loader: userLoader,
+    path: "*",
+    element: <SignIn />, // fallback
   },
 ]);
 

@@ -24,6 +24,11 @@ export default function Users() {
     await loadUsers();
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/signin";
+  };
+
   return (
     <div>
       <h2>Usuários</h2>
@@ -34,6 +39,7 @@ export default function Users() {
           <button onClick={() => handleDelete(user.id)}>
             Excluir
           </button>
+          <button onClick={handleLogout}>Logout</button>
         </div>
       ))}
     </div>
