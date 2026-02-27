@@ -1,13 +1,13 @@
 .container {
-  max-width: 800px;
-  width: 90%;
+  max-width: 900px;
+  width: 95%;
   margin: 50px auto;
   padding: 30px;
   border-radius: 10px;
   background-color: #f8f9fa;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  transition: all 0.3s ease;
+  position: relative;
 }
 
 .title {
@@ -35,7 +35,7 @@
 }
 
 .userCard:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .userInfo {
@@ -65,11 +65,11 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
+  color: white;
 }
 
 .deleteButton {
   background-color: #dc3545;
-  color: white;
 }
 
 .deleteButton:hover {
@@ -79,12 +79,42 @@
 
 .logoutButton {
   background-color: #6c757d;
-  color: white;
 }
 
 .logoutButton:hover {
   background-color: #495057;
   transform: translateY(-2px);
+}
+
+.editButton {
+  background-color: #0d6efd;
+}
+
+.editButton:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+}
+
+/* FAB (Floating Action Button) */
+.fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  color: white;
+  font-size: 30px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.fab:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-3px);
 }
 
 /* Responsivo */
@@ -99,4 +129,24 @@
     width: 100%;
     justify-content: flex-end;
   }
+}
+
+/* Badge para role */
+.roleBadge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+/* Gradientes */
+.adminBadge {
+  background: linear-gradient(90deg, #0d6efd, #4dabf7); /* azul degrade */
+}
+
+.userBadge {
+  background: linear-gradient(90deg, #dc3545, #ff6b6b); /* vermelho degrade */
 }

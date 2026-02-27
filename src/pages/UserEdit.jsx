@@ -1,17 +1,14 @@
 import { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import UserRepository from "../infrastructure/repositories/UserRepository";
 import UpdateUser from "../application/useCases/UpdateUser";
-
-export async function userLoader({ params }) {
-  const repository = new UserRepository();
-  return await repository.getById(params.userId);
-}
+import styles from "../components/style/users/UserEdit.module.css";
 
 export default function UserEdit() {
-  const user = useLoaderData(); // <-- vem do loader
   const navigate = useNavigate();
+  const location = useLocation();
+  const user = location.state.user; // usuário passado do Users.jsx
 
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
@@ -24,12 +21,7 @@ export default function UserEdit() {
     e.preventDefault();
 
     try {
-      await updateUserUseCase.execute(user.id, {
-        name,
-        email,
-        type,
-      });
-
+      await updateUserUseCase.execute(user.id, { name, email, type });
       alert("Usuário atualizado com sucesso");
       navigate("/users");
     } catch (error) {
@@ -38,38 +30,47 @@ export default function UserEdit() {
   };
 
   return (
-    <div>
-      <h2>Editar Usuário</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Editar Usuário</h2>
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Nome</label>
           <input
+            className={styles.input}
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
 
-        <div>
-          <label>Email</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Email</label>
           <input
+            className={styles.input}
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
 
-        <div>
-          <label>Tipo</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Tipo</label>
           <select
+            className={styles.select}
             value={type}
             onChange={(e) => setType(e.target.value)}
+            required
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
         </div>
 
-        <button type="submit">Salvar</button>
+        <button type="submit" className={styles.button}>
+          Salvar
+        </button>
       </form>
     </div>
   );

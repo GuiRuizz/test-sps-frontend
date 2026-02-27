@@ -25,10 +25,9 @@ const router = createBrowserRouter([
         element: <Users />,
       },
       {
-        path: "/users/:userId",
+        path: "/users/edit",
         element: <UserEdit />,
-        loader: userLoader,
-      },
+      }
     ],
   },
   {
