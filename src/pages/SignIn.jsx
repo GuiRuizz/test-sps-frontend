@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
+import AuthRepository from "../infrastructure/repositories/AuthRepository";
+import styles from "../components/signIn/SignIn.module.css";
+
+const authRepository = new AuthRepository();
 
 export default function SignIn() {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,13 +16,8 @@ export default function SignIn() {
     setError("");
 
     try {
-      const { data } = await api.post("/auth/login", {
-        email,
-        password,
-      });
-
+      const data = await authRepository.login(email, password);
       localStorage.setItem("token", data.token);
-
       navigate("/users");
     } catch (err) {
       setError("Email ou senha inválidos");
@@ -28,13 +25,13 @@ export default function SignIn() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "100px auto" }}>
-      <h2>Login</h2>
-
+    <div className={styles.container}>
+      <h2 className={styles.title}>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Email</label>
           <input
+            className={styles.input}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -42,9 +39,10 @@ export default function SignIn() {
           />
         </div>
 
-        <div style={{ marginTop: "10px" }}>
-          <label>Senha</label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Senha</label>
           <input
+            className={styles.input}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -52,16 +50,9 @@ export default function SignIn() {
           />
         </div>
 
-        {error && (
-          <p style={{ color: "red", marginTop: "10px" }}>
-            {error}
-          </p>
-        )}
+        {error && <p className={styles.error}>{error}</p>}
 
-        <button
-          type="submit"
-          style={{ marginTop: "15px", width: "100%" }}
-        >
+        <button type="submit" className={styles.button}>
           Entrar
         </button>
       </form>
