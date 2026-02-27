@@ -1,33 +1,32 @@
-import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { useState } from "react";
+import UserRepository from "../infrastructure/repositories/UserRepository";
+import UpdateUser from "../application/useCases/UpdateUser";
 
-export function userLoader({ params }) {
-  const user = {
-    id: params.userId,
-    name: "teste",
-    email: "teste@gmail.com",
+export default function UserEdit({ user }) {
+  const [name, setName] = useState(user.name);
+
+  const userRepository = new UserRepository();
+  const updateUserUseCase = new UpdateUser(userRepository);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await updateUserUseCase.execute(user.id, {
+      ...user,
+      name
+    });
+
+    alert("Usuário atualizado com sucesso");
   };
 
-  return { user };
-}
-
-function EditUser() {
-  const { user } = useLoaderData();
-
   return (
-    <div>
-      <p>Edição de Usuário</p>
-      <div>
-        <form>
-          <label>Nome:</label>
-          <input type="text" value={user.name} />
-          <br />
-          <br />
-          <button type="submit">Salvar</button>
-        </form>
-      </div>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <button type="submit">Salvar</button>
+    </form>
   );
 }
-
-export default EditUser;
