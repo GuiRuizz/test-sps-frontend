@@ -18,6 +18,7 @@ export default function SignIn() {
     try {
       const data = await authRepository.login(email, password);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.user.id);
       navigate("/users");
     } catch (err) {
       setError("Email ou senha inválidos");
