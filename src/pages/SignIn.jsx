@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthRepository from "../infrastructure/repositories/AuthRepository";
-import styles from "../components/signIn/SignIn.module.css";
+import styles from "../components/style/signIn/SignIn.module.css";
 
 const authRepository = new AuthRepository();
 
