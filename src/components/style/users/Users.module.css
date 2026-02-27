@@ -1,0 +1,152 @@
+.container {
+  max-width: 900px;
+  width: 95%;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.userList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.userCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  transition: box-shadow 0.2s;
+}
+
+.userCard:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: 500;
+  color: #333;
+}
+
+.userEmail {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  color: white;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+}
+
+.deleteButton:hover {
+  background-color: #b02a37;
+  transform: translateY(-2px);
+}
+
+.logoutButton {
+  background-color: #6c757d;
+}
+
+.logoutButton:hover {
+  background-color: #495057;
+  transform: translateY(-2px);
+}
+
+.editButton {
+  background-color: #0d6efd;
+}
+
+.editButton:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+}
+
+/* FAB (Floating Action Button) */
+.fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  color: white;
+  font-size: 30px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.fab:hover {
+  background-color: #0b5ed7;
+  transform: translateY(-3px);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .userCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* Badge para role */
+.roleBadge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+/* Gradientes */
+.adminBadge {
+  background: linear-gradient(90deg, #0d6efd, #4dabf7); /* azul degrade */
+}
+
+.userBadge {
+  background: linear-gradient(90deg, #dc3545, #ff6b6b); /* vermelho degrade */
+}
