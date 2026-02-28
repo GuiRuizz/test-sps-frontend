@@ -8,6 +8,8 @@ import styles from "../components/style/users/Users.module.css";
 import { jwtDecode } from "jwt-decode";
 import CreateUserModal from "../components/users/CreateUserModal";
 import { toast } from "react-toastify";
+import UserCard from "../components/users/UserCard";
+import Fab from "../components/ui/Fab";
 
 
 
@@ -68,46 +70,19 @@ export default function Users() {
       <h2 className={styles.title}>Usuários</h2>
       <div className={styles.userList}>
         {users.map((user) => (
-          <div key={user.id} className={styles.userCard}>
-            <div className={styles.userInfo}>
-              <span className={styles.userName}>{user.name}</span>
-              <span className={styles.userEmail}>{user.email}</span>
-              <span
-                className={`${styles.roleBadge} ${user.type === "admin" ? styles.adminBadge : styles.userBadge
-                  }`}
-              >
-                {user.type}
-              </span>
-            </div>
-            <div className={styles.actions}>
-              <button
-                className={`${styles.button} ${styles.editButton}`}
-                onClick={() => handleEdit(user.id)}
-              >
-                Edit
-              </button>
-              {user.id === loggedUserId && (
-                <button
-                  className={`${styles.button} ${styles.logoutButton}`}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              )}
-              <button
-                className={`${styles.button} ${styles.deleteButton}`}
-                onClick={() => handleDelete(user.id)}
-              >
-                Excluir
-              </button>
-            </div>
-          </div>
+          <UserCard
+            key={user.id}
+            user={user}
+            loggedUserId={loggedUserId}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onLogout={handleLogout}
+          />
         ))}
       </div>
 
-      <button className={styles.fab} onClick={() => setIsModalOpen(true)}>
-        +
-      </button>
+      <Fab onClick={() => setIsModalOpen(true)}>+</Fab>
+      
       <CreateUserModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

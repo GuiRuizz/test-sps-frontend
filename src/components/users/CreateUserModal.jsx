@@ -27,6 +27,14 @@ export default function CreateUserModal({
         onClose();
     };
 
+    const handleClose = (e) => {
+        onClose();
+        setName("");
+        setEmail("");
+        setType("user");
+        setPassword("");
+    }
+
     return createPortal(
         <div className={styles.modalOverlay} onClick={onClose}>
             <div
@@ -79,7 +87,7 @@ export default function CreateUserModal({
                         <button
                             type="button"
                             className={`${styles.button} ${styles.deleteButton}`}
-                            onClick={onClose}
+                            onClick={handleClose}
                         >
                             Cancelar
                         </button>
