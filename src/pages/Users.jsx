@@ -10,7 +10,7 @@ import CreateUserModal from "../components/users/CreateUserModal";
 import { toast } from "react-toastify";
 import UserCard from "../components/users/UserCard";
 import Fab from "../components/ui/Fab";
-
+import log from "../utils/logger";
 
 
 export default function Users() {
