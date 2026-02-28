@@ -1,31 +1,55 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 import UserRepository from "../infrastructure/repositories/UserRepository";
 import UpdateUser from "../application/useCases/UpdateUser";
 import styles from "../components/style/users/UserEdit.module.css";
+import { ToastContainer, toast } from 'react-toastify';
+
+export async function userLoader({ params }) {
+  const repository = new UserRepository();
+  return await repository.getUserById(params.userId);
+}
 
 export default function UserEdit() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const user = location.state.user; // usuário passado do Users.jsx
+  const user = useLoaderData(); // ✅ agora vem do loader
 
-  const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [type, setType] = useState(user?.type || "user");
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [type, setType] = useState(user.type);
 
   const userRepository = new UserRepository();
   const updateUserUseCase = new UpdateUser(userRepository);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await updateUserUseCase.execute(user.id, { name, email, type });
-      alert("Usuário atualizado com sucesso");
+      toast.success('Usuário atualizado com sucesso', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       navigate("/users");
     } catch (error) {
-      alert("Erro ao atualizar usuário");
+      toast.error('Erro ao atualizar usuário', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -67,7 +91,7 @@ export default function UserEdit() {
             <option value="admin">Admin</option>
           </select>
         </div>
-
+        
         <button type="submit" className={styles.button}>
           Salvar
         </button>

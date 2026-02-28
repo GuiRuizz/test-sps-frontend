@@ -39,8 +39,8 @@ export default function Users() {
     navigate("/signin");
   };
 
-  const handleEdit = (user) => {
-    navigate(`/users/edit`, { state: { user } });
+  const handleEdit = (id) => {
+    navigate(`/users/${id}`);
   };
 
   const handleCreate = () => {
@@ -66,7 +66,7 @@ export default function Users() {
             <div className={styles.actions}>
               <button
                 className={`${styles.button} ${styles.editButton}`}
-                onClick={() => handleEdit(user)}
+                onClick={() => handleEdit(user.id)}
               >
                 Edit
               </button>
