@@ -3,4 +3,5 @@ export default class IUserRepository {
   create(user) {}
   update(id, user) {}
   delete(id) {}
+  getUserById(id){}
 }

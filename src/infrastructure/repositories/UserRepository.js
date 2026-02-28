@@ -6,6 +6,12 @@ export default class UserRepository {
     return data;
   }
 
+  async getUserById(id) {
+
+    const { data } = await api.get(`/users/${id}`);
+    return data;
+  }
+
   async create(user) {
     const { data } = await api.post("/users", user);
     return data;

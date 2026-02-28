@@ -1,18 +1,26 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 import UserRepository from "../infrastructure/repositories/UserRepository";
 import UpdateUser from "../application/useCases/UpdateUser";
 import styles from "../components/style/users/UserEdit.module.css";
+import { toast } from "react-toastify";
+
+import FormInput from "../components/ui/FormInput";
+import FormSelect from "../components/ui/FormSelect";
+
+export async function userLoader({ params }) {
+  const repository = new UserRepository();
+  return await repository.getUserById(params.userId);
+}
 
 export default function UserEdit() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const user = location.state.user; // usuário passado do Users.jsx
+  const user = useLoaderData();
 
-  const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [type, setType] = useState(user?.type || "user");
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [type, setType] = useState(user.type);
 
   const userRepository = new UserRepository();
   const updateUserUseCase = new UpdateUser(userRepository);
@@ -22,10 +30,15 @@ export default function UserEdit() {
 
     try {
       await updateUserUseCase.execute(user.id, { name, email, type });
-      alert("Usuário atualizado com sucesso");
+      toast.success("Usuário atualizado com sucesso!");
       navigate("/users");
     } catch (error) {
-      alert("Erro ao atualizar usuário");
+      if (error.response?.status === 400) {
+        toast.error("Este email já está cadastrado!");
+      } else {
+        toast.error("Erro ao atualizar usuário");
+        console.error(error);
+      }
     }
   };
 
@@ -34,39 +47,18 @@ export default function UserEdit() {
       <h2 className={styles.title}>Editar Usuário</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Nome</label>
-          <input
-            className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Email</label>
-          <input
-            className={styles.input}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Tipo</label>
-          <select
-            className={styles.select}
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            required
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
+        <FormInput label="Nome" value={name} onChange={(e) => setName(e.target.value)} required />
+        <FormInput label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <FormSelect
+          label="Tipo"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          options={[
+            { value: "user", label: "User" },
+            { value: "admin", label: "Admin" },
+          ]}
+          required
+        />
 
         <button type="submit" className={styles.button}>
           Salvar
