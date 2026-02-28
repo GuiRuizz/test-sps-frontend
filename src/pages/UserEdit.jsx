@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 import FormInput from "../components/ui/FormInput";
 import FormSelect from "../components/ui/FormSelect";
+import log from "../utils/logger";
 
 export async function userLoader({ params }) {
   const repository = new UserRepository();
@@ -31,12 +32,16 @@ export default function UserEdit() {
     try {
       await updateUserUseCase.execute(user.id, { name, email, type });
       toast.success("Usuário atualizado com sucesso!");
+      log.info("Usuário atualizado com sucesso!")
       navigate("/users");
     } catch (error) {
       if (error.response?.status === 400) {
         toast.error("Este email já está cadastrado!");
+        log.error("Este email já está cadastrado!")
+
       } else {
         toast.error("Erro ao atualizar usuário");
+        log.error("Erro ao atualizar usuário")
         console.error(error);
       }
     }

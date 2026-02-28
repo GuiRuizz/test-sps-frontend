@@ -27,8 +27,14 @@ export default function Users() {
   const loggedUserId = token ? jwtDecode(token).id : null;
 
   const loadUsers = async () => {
-    const data = await getUsers.execute();
-    setUsers(data);
+    try {
+      const data = await getUsers.execute();
+      setUsers(data);
+      log.info("Usuários carregados:", data);
+    } catch (err) {
+      log.error("Erro ao carregar usuários:", err);
+      toast.error("Não foi possível carregar usuários.");
+    }
   };
 
   useEffect(() => {
@@ -36,17 +42,25 @@ export default function Users() {
   }, []);
 
   const handleDelete = async (id) => {
-    await deleteUserUseCase.execute(id);
-    await loadUsers();
+    try {
+      await deleteUserUseCase.execute(id);
+      await loadUsers();
+      log.info("Usuário deletado:", id);
+    } catch (err) {
+      toast.error("Erro ao deletar usuário.");
+      log.error("Erro ao deletar usuário:", err);
+    }
   };
 
   const handleLogout = () => {
+    log.info('Usuário foi deslogado')
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     navigate("/signin");
   };
 
   const handleEdit = (id) => {
+    log.info("Usuário m processo de atualização:", id)
     navigate(`/users/${id}`);
   };
 
@@ -54,13 +68,15 @@ export default function Users() {
     try {
       await createUserUseCase.execute(payload);
       await loadUsers();
-      toast.success("Usuário criado com sucesso!"); // ✅ Sucesso
+      toast.success("Usuário criado com sucesso!");
+      log.info("Usuário criado:", payload);
     } catch (error) {
       if (error.response?.status === 400) {
-        toast.error("Este email já está cadastrado!"); // ❌ Email duplicado
+        toast.error("Este email já está cadastrado!");
+        log.warn("Tentativa de criar usuário com email duplicado:", payload.email);
       } else {
         toast.error("Ocorreu um erro ao criar o usuário.");
-        console.error(error);
+        log.error("Erro ao criar usuário:", error);
       }
     }
   };
@@ -82,7 +98,7 @@ export default function Users() {
       </div>
 
       <Fab onClick={() => setIsModalOpen(true)}>+</Fab>
-      
+
       <CreateUserModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
