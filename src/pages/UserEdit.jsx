@@ -4,7 +4,10 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import UserRepository from "../infrastructure/repositories/UserRepository";
 import UpdateUser from "../application/useCases/UpdateUser";
 import styles from "../components/style/users/UserEdit.module.css";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from "react-toastify";
+
+import FormInput from "../components/ui/FormInput";
+import FormSelect from "../components/ui/FormSelect";
 
 export async function userLoader({ params }) {
   const repository = new UserRepository();
@@ -13,7 +16,7 @@ export async function userLoader({ params }) {
 
 export default function UserEdit() {
   const navigate = useNavigate();
-  const user = useLoaderData(); // ✅ agora vem do loader
+  const user = useLoaderData();
 
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -22,34 +25,20 @@ export default function UserEdit() {
   const userRepository = new UserRepository();
   const updateUserUseCase = new UpdateUser(userRepository);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await updateUserUseCase.execute(user.id, { name, email, type });
-      toast.success('Usuário atualizado com sucesso', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Usuário atualizado com sucesso!");
       navigate("/users");
     } catch (error) {
-      toast.error('Erro ao atualizar usuário', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      if (error.response?.status === 400) {
+        toast.error("Este email já está cadastrado!");
+      } else {
+        toast.error("Erro ao atualizar usuário");
+        console.error(error);
+      }
     }
   };
 
@@ -58,40 +47,19 @@ export default function UserEdit() {
       <h2 className={styles.title}>Editar Usuário</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Nome</label>
-          <input
-            className={styles.input}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+        <FormInput label="Nome" value={name} onChange={(e) => setName(e.target.value)} required />
+        <FormInput label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <FormSelect
+          label="Tipo"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          options={[
+            { value: "user", label: "User" },
+            { value: "admin", label: "Admin" },
+          ]}
+          required
+        />
 
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Email</label>
-          <input
-            className={styles.input}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label}>Tipo</label>
-          <select
-            className={styles.select}
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            required
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-        
         <button type="submit" className={styles.button}>
           Salvar
         </button>
