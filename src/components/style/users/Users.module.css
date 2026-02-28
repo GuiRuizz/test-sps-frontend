@@ -5,7 +5,7 @@
   padding: 30px;
   border-radius: 10px;
   background-color: #f8f9fa;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
 }
@@ -35,7 +35,7 @@
 }
 
 .userCard:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .userInfo {
@@ -66,6 +66,11 @@
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
   color: white;
+  bottom: 30px;
+  right: 30px;
+  width: 80px;
+  height: 30px;
+
 }
 
 .deleteButton {
@@ -95,6 +100,15 @@
   transform: translateY(-2px);
 }
 
+.createButton {
+  background-color: #FF7600;
+}
+
+.createButton:hover {
+  background-color: #ff7500;
+  transform: translateY(-2px);
+}
+
 /* FAB (Floating Action Button) */
 .fab {
   position: fixed;
@@ -108,7 +122,7 @@
   font-size: 30px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: background-color 0.2s, transform 0.2s;
 }
 
@@ -144,9 +158,64 @@
 
 /* Gradientes */
 .adminBadge {
-  background: linear-gradient(90deg, #0d6efd, #4dabf7); /* azul degrade */
+  background: linear-gradient(90deg, #0d6efd, #4dabf7);
+  /* azul degrade */
 }
 
 .userBadge {
-  background: linear-gradient(90deg, #dc3545, #ff6b6b); /* vermelho degrade */
+  background: linear-gradient(90deg, #dc3545, #ff6b6b);
+  /* vermelho degrade */
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 95%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  justify-content: flex-end;
+}
+
+.input,
+.select {
+  display: block;
+  /* força ocupar uma linha inteira */
+  width: 100%;
+  /* ocupar toda a largura do modal */
+  margin-bottom: 15px;
+  /* espaço entre os campos */
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
